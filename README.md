@@ -55,4 +55,4 @@ The web page will display your current score in an easy-to-read format.
 
 This repository is currently not accepting direct contributions, as it serves as a showcase for the author's Python coursework. However, if you discover any issues or have suggestions for improvements, please feel free to raise an issue or get in touch via email talgolde1@gmail.com.
 
-We hope you enjoy the "World of Games" and have a fantastic gaming experience! Thanks you for visiting my repository.
+We hope you enjoy the "World of Games" and have a fantastic gaming experience! Thank you for visiting my repository.
