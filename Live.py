@@ -2,7 +2,7 @@
 from Games.CurrencyRouletteGame import CurrencyRouletteGame
 from Games.GuessGame import GuessGame
 from Games.MemoryGame import MemoryGame
-from Score import add_score
+from Scores.Score import add_score
 
 
 def welcome(name):
