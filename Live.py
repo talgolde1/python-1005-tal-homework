@@ -46,7 +46,7 @@ def load_game():
     while True:
         try:
             play_again = input("Do you want to play again? (yes/no): ")
-            if play_again.lower() != "yes" and play_again.lower() != "no":
+            if play_again.lower() != "yes" or play_again.lower() != "no":
                 raise ValueError
             break
         except ValueError:
