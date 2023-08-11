@@ -1,16 +1,11 @@
 pipeline {
     agent any
-
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
         stage('Build') {
             steps {
                 script {
-                    docker.build("world-of-games")  // Use the correct image name
+                    def containerId = docker.build('world-of-games', '.').run("-p 8777:8777 -v ${WORKSPACE}/Scores.txt:/app/Scores.txt -d")
+                    env.CONTAINER_ID = containerId
                 }
             }
         }
@@ -19,19 +14,17 @@ pipeline {
                 script {
                     docker.image("world-of-games").withRun("-p 8777:8777 -v ${WORKSPACE}/Scores.txt:/app/Scores.txt") {
                         sh 'sleep 10'
+                }
             }
         }
-    }
-}
-        stage('Test') {
+        stage('Stop Container') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('FAILURE') }
+            }
             steps {
                 script {
-                    try {
-                        sh 'python e2e.py'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        throw e
-                    }
+                    // Stop the container using the saved container ID
+                    docker.container(env.CONTAINER_ID).stop()
                 }
             }
         }
@@ -39,16 +32,8 @@ pipeline {
 
     post {
         always {
-            script {
-                docker.image("world-of-games").remove()
-            }
-        }
-        success {
-            script {
-                docker.withRegistry('', 'dockerhub-credentials') {
-                    docker.image("world-of-games").push("${env.BUILD_NUMBER}")
-                }
-            }
+            // Remove the image after the build is complete (optional)
+            docker.image('world-of-games').remove()
         }
     }
 }
