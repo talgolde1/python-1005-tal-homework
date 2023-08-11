@@ -37,13 +37,6 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            script {
-                docker.image("world-of-games").remove()
-            }
-        }
         success {
             script {
                 docker.withRegistry('https://registry.example.com', 'dockerhub-credentials') {
