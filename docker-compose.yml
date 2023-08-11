@@ -5,4 +5,4 @@ services:
     ports:
       - "8777:8777"
     volumes:
-      - ./Scores.txt:/Scores.txt
+      - ./Scores/Scores.txt:/app/Scores.txt
