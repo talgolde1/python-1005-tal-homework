@@ -10,14 +10,14 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.build("my-flask-app")
+                    docker.build("world-of-games")  // Use the correct image name
                 }
             }
         }
         stage('Run') {
             steps {
                 script {
-                    docker.image("my-flask-app").withRun('-p 8777:8777 -v $(pwd)/Scores.txt:/Scores.txt') {
+                    docker.image("world-of-games").withRun('-p 8777:8777 -v $(pwd)/Scores.txt:/Scores.txt') {
                         sh 'sleep 10'
                     }
                 }
@@ -40,13 +40,13 @@ pipeline {
     post {
         always {
             script {
-                docker.image("my-flask-app").remove()
+                docker.image("world-of-games").remove()  // Use the correct image name
             }
         }
         success {
             script {
                 docker.withRegistry('', 'dockerhub-credentials') {
-                    docker.image("my-flask-app").push("${env.BUILD_NUMBER}")
+                    docker.image("world-of-games").push("${env.BUILD_NUMBER}")  // Use the correct image name
                 }
             }
         }
