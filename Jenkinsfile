@@ -17,12 +17,12 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    docker.image("world-of-games").withRun('-p 8777:8777 -v ./Scores.txt:/app/Scores.txt') {
+                    docker.image("world-of-games").withRun("-p 8777:8777 -v ${WORKSPACE}/Scores.txt:/app/Scores.txt") {
                         sh 'sleep 10'
-                    }
-                }
             }
         }
+    }
+}
         stage('Test') {
             steps {
                 script {
