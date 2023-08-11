@@ -17,7 +17,7 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    docker.image("world-of-games").withRun('-p 8777:8777 -v $(pwd)/Scores.txt:/Scores.txt') {
+                    docker.image("world-of-games").withRun('-p 8777:8777 -v $(pwd)/Scores.txt:/app/Scores.txt') {
                         sh 'sleep 10'
                     }
                 }
