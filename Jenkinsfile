@@ -25,8 +25,7 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    def containerId = docker.container('python:3.9', "-p 8777:8777 -v /app/Scores.txt:")
-                    container.start()
+                    def container = docker.image('python:3.9').run("-p 8777:8777 -v /app/Scores.txt:/app/Scores.txt")
                     env.CONTAINER_ID = container.id
                 }
             }
@@ -50,7 +49,7 @@ pipeline {
             script {
                 def containerId = env.CONTAINER_ID ?: ""
                 if (containerId) {
-                    bat "docker stop ${containerId}"
+                    def container = docker.image('python:3.9').stop("${containerId}")
                 }
             }
         }
