@@ -3,14 +3,12 @@ from selenium import webdriver
 
 
 def test_scores_service(app_url):
-    # Set up Selenium WebDriver
-    driver = webdriver.Chrome()  # You can use other WebDriver options as well
+    driver = webdriver.Chrome()
     driver.get(app_url)
     # Locate and check the score element
     score_element = driver.find_element("score")
     score = int(score_element.text)
     is_valid_score = 1 <= score <= 1000
-    # Clean up
     driver.quit()
     return is_valid_score
 

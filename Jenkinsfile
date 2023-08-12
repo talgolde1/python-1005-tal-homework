@@ -34,7 +34,8 @@ pipeline {
             steps {
                 script {
                     try {
-                        bat 'python e2e.py'
+                        def appUrl = "http://localhost:8777"
+                        bat 'python e2e.py' + appUrl
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         throw e
@@ -49,7 +50,8 @@ pipeline {
             script {
                 def containerId = env.CONTAINER_ID ?: ""
                 if (containerId) {
-                    def container = docker.image('python:3.9').stop("${containerId}")
+                    docker.image('python:3.9').inside("--rm -v /app/Scores.txt:/app/Scores.txt") {
+                    }
                 }
             }
         }
