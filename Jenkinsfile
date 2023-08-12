@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def containerId = docker.build("world-of-games")  // Use the correct image name
+                    def containerId = docker.build("python:3.9")  // Use the correct image name
                     env.CONTAINER_ID = containerId
                 }
             }
@@ -18,7 +18,7 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    def container = docker.image("world-of-games").withRun("-p 8777:8777 -v ${WORKSPACE}/Scores.txt:/app/Scores.txt") {
+                    def container = docker.image("python:3.9").withRun("-p 8777:8777 -v ${WORKSPACE}/Scores.txt:/app/Scores.txt") {
                         sh 'sleep 10'
                     }
                     env.CONTAINER_ID = container.id
@@ -40,10 +40,20 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                def containerId = env.CONTAINER_ID ?: ""
+                if (containerId) {
+                    docker.image("python:3.9").inside("--rm -v ${containerId}:/app") {
+                        sh 'echo Cleaning up the container'
+                    }
+                }
+            }
+        }
         success {
             script {
                 docker.withRegistry('', 'dockerhub-credentials') {
-                    docker.image("world-of-games").push("${env.BUILD_NUMBER}")
+                    docker.image("python:3.9").push("${env.BUILD_NUMBER}")
                 }
             }
         }
