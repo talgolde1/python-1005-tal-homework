@@ -7,6 +7,13 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Print Workspace Path') {
+            steps {
+                script {
+                    echo "Workspace path: ${WORKSPACE}"
+                }
+            }
+        }
         stage('Build') {
             steps {
                 script {
