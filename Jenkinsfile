@@ -40,7 +40,6 @@ pipeline {
     }
 
     post {
-        // No removal step
         success {
             script {
                 docker.withRegistry('', 'dockerhub-credentials') {
