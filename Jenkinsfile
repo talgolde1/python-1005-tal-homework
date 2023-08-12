@@ -50,7 +50,7 @@ pipeline {
             script {
                 def containerId = env.CONTAINER_ID ?: ""
                 if (containerId) {
-                    sh "docker stop ${containerId}"
+                    bat "docker stop ${containerId}"
                 }
             }
         }
