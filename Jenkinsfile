@@ -17,7 +17,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def containerId = docker.build("python:3.9")  // Use the correct image name
+                    def containerId = docker.build("python:3.9")
                     env.CONTAINER_ID = containerId
                 }
             }
@@ -44,6 +44,16 @@ pipeline {
                 }
             }
         }
+        stage('Cleanup') {
+            steps {
+                script {
+                    def containerId = env.CONTAINER_ID ?: ""
+                    if (containerId) {
+                        sh "docker stop ${containerId}"
+                    }
+                }
+            }
+        }
     }
 
     post {
@@ -51,7 +61,7 @@ pipeline {
             script {
                 def containerId = env.CONTAINER_ID ?: ""
                 if (containerId) {
-                    docker.image("python:3.9").inside("--rm -v ${containerId}:/app") {
+                    docker.image("python:3.9").inside("--rm -v ${WORKSPACE}:/app") {
                         sh 'echo Cleaning up the container'
                     }
                 }
