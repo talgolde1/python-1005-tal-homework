@@ -22,8 +22,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build the Docker image
-                    dockerImage = docker.build(DOCKER_IMAGE)
+                    def containerId = docker.build("python:3.9")
+                    env.CONTAINER_ID = containerId
                 }
             }
         }
