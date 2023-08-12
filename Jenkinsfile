@@ -25,9 +25,8 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    def container = docker.image("python:3.9").withRun("-p 8777:8777 -v ${WORKSPACE}/Scores.txt:/app/Scores.txt") {
-                        sh 'sleep 10'
-                    }
+                    def container = docker.container('python:3.9', "-p 8777:8777 -v /app/Scores.txt:/app/Scores.txt")
+                    container.start()
                     env.CONTAINER_ID = container.id
                 }
             }
@@ -44,16 +43,6 @@ pipeline {
                 }
             }
         }
-        stage('Cleanup') {
-            steps {
-                script {
-                    def containerId = env.CONTAINER_ID ?: ""
-                    if (containerId) {
-                        sh "docker stop ${containerId}"
-                    }
-                }
-            }
-        }
     }
 
     post {
@@ -61,9 +50,7 @@ pipeline {
             script {
                 def containerId = env.CONTAINER_ID ?: ""
                 if (containerId) {
-                    docker.image("python:3.9").inside("--rm -v ${WORKSPACE}:/app") {
-                        sh 'echo Cleaning up the container'
-                    }
+                    sh "docker stop ${containerId}"
                 }
             }
         }
