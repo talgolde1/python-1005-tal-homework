@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def containerId = docker.build("world-of-games")
+                    def containerId = docker.build("world-of-games")  // Use the correct image name
                     env.CONTAINER_ID = containerId
                 }
             }
@@ -18,9 +18,10 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    docker.image("world-of-games").withRun("-p 8777:8777 -v ${WORKSPACE}/Scores.txt:/app/Scores.txt") {
+                    def container = docker.image("world-of-games").withRun("-p 8777:8777 -v ${WORKSPACE}/Scores.txt:/app/Scores.txt") {
                         sh 'sleep 10'
                     }
+                    env.CONTAINER_ID = container.id
                 }
             }
         }
@@ -37,13 +38,15 @@ pipeline {
             }
         }
     }
+
+    post {
+        // No removal step
         success {
             script {
-                docker.withRegistry('https://registry.example.com', 'dockerhub-credentials') {
-                    docker.image("world-of-games").push
+                docker.withRegistry('', 'dockerhub-credentials') {
+                    docker.image("world-of-games").push("${env.BUILD_NUMBER}")
                 }
             }
         }
     }
 }
-
