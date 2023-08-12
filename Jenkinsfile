@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'python e2e.py'
+                        bat 'python e2e.py'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         throw e
