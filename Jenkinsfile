@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = "python:3.9"
-        CONTAINER_ID = ""
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -30,14 +25,9 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    // Run the Docker container
-                    if (isUnix()) {
-                        CONTAINER_ID = dockerImage.run("-p 8777:8777 -v /app/Scores.txt:/app/Scores.txt -d")
-                            .id
-                    } else {
-                        CONTAINER_ID = dockerImage.run("-p 8777:8777 -v C:/path/to/Scores.txt:/app/Scores.txt -d")
-                            .id
-                    }
+                    def containerId = docker.container('python:3.9', "-p 8777:8777 -v /app/Scores.txt:")
+                    container.start()
+                    env.CONTAINER_ID = container.id
                 }
             }
         }
@@ -45,11 +35,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        if (isUnix()) {
-                            sh 'python e2e.py'
-                        } else {
-                            bat 'python e2e.py'
-                        }
+                        sh 'python e2e.py'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         throw e
@@ -62,27 +48,18 @@ pipeline {
     post {
         always {
             script {
-                if (CONTAINER_ID) {
-                    if (isUnix()) {
-                        sh "docker stop ${CONTAINER_ID}"
-                    } else {
-                        bat "docker stop ${CONTAINER_ID}"
-                    }
+                def containerId = env.CONTAINER_ID ?: ""
+                if (containerId) {
+                    sh "docker stop ${containerId}"
                 }
             }
         }
         success {
             script {
-                if (isUnix()) {
-                    docker.withRegistry('', 'dockerhub-credentials') {
-                        docker.image(DOCKER_IMAGE).push("${env.BUILD_NUMBER}")
-                    }
+                docker.withRegistry('', 'dockerhub-credentials') {
+                    docker.image("python:3.9").push("${env.BUILD_NUMBER}")
                 }
             }
         }
     }
-}
-
-def isUnix() {
-    return agent.label == null || agent.label.startsWith('linux')
 }
