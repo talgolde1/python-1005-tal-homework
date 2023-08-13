@@ -3,7 +3,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from Scores.MainScores import app
-import subprocess
 import threading
 
 
@@ -11,7 +10,6 @@ def test_scores_service(app_url):
     chrome_options = webdriver.ChromeOptions()
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(app_url)
-
     try:
         wait = WebDriverWait(driver, 10)
         score_element = wait.until(EC.presence_of_element_located((By.ID, "score")))
@@ -35,8 +33,5 @@ if __name__ == "__main__":
     flask_thread = threading.Thread(target=app.run)
     flask_thread.start()
     app_url = "http://localhost:5000/"
-    try:
-        exit_code = subprocess.call(["python", "MainGame.py"])
-    except Exception as e:
-        print("An error occurred:", e)
-        exit_code = -1
+    exit_code = main_function(app_url)
+    exit(exit_code)

@@ -1,6 +1,7 @@
 
 import os
 
+
 winnig_points = lambda difficulty: (difficulty * 3) + 5
 
 
@@ -12,6 +13,6 @@ def add_score(difficulty):
             file.seek(0)
             file.write(str(new_score))
     except IOError:
-        with open("Scores.txt", "w") as file:
+        with open(os.path.join("Scores", "Scores.txt"), "w") as file:
             new_score = winnig_points(difficulty)
             file.write(str(new_score))

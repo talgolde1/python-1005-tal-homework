@@ -44,18 +44,13 @@ def load_game():
         if currency_game.is_won():
             add_score(int(difficulty))
     while True:
-        try:
             play_again = input("Do you want to play again? (yes/no): ")
-            if play_again.lower() != "yes" or play_again.lower() != "no":
-                raise ValueError
-            break
-        except ValueError:
-            print("Invalid input. Please enter 'yes' or 'no'. ")
-
-    if play_again.lower() != "yes":
-        print("Hope you had fun! See you next time :)")
-        return False
-    else:
-        print("Let's play again! ")
-        load_game()
+            if play_again == "yes":
+                print("Let's play again! ")
+                load_game()
+            elif play_again == "no":
+                print("Hope you had fun! See you next time :)")
+                return False
+            else:
+                print("Invalid input. Please enter 'yes' or 'no'. ")
 
