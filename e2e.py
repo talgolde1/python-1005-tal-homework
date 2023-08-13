@@ -34,7 +34,7 @@ def main_function(app_url):
 if __name__ == "__main__":
     flask_thread = threading.Thread(target=app.run)
     flask_thread.start()
-    app_url = "http://localhost:8777/"
+    app_url = "http://localhost:5000/"
     try:
         exit_code = subprocess.call(["python", "MainGame.py"])
     except Exception as e:

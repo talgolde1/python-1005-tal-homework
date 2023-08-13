@@ -25,7 +25,7 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    def container = docker.image('python:3.9').run("-p 8777:8777 -v /app/Scores.txt:/app/Scores.txt")
+                    def container = docker.image('python:3.9').run("-p 5000:5000 -v /app/Scores.txt:/app/Scores.txt")
                     env.CONTAINER_ID = container.id
                 }
             }
