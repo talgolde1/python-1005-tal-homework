@@ -1,3 +1,4 @@
+import os
 
 from flask import Flask
 
@@ -7,7 +8,7 @@ app = Flask(__name__)
 @app.route('/')
 def score_server():
     try:
-        with open("Scores.txt", "r") as file:
+        with open(os.path.join("Scores", "Scores.txt"), "r") as file:
             score = file.read()
             html = f'''
                 <html>
