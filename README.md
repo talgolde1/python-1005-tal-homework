@@ -91,8 +91,6 @@ Defines the Jenkins pipeline stages:
    docker-compose up --build
    ```
 
-4. Access the live web service at http://localhost:5000.
-
 ## Jenkins Pipeline
 
 To execute the Jenkins pipeline:
@@ -100,6 +98,7 @@ To execute the Jenkins pipeline:
 1. Set up Jenkins.
 2. Establish a new pipeline job, configuring it to use the Jenkinsfile within the repository.
 3. Trigger the pipeline, which encompasses various stages, including comprehensive Selenium-based testing of the web service.
+4. Access the Scores.txt live web service at http://localhost:5000.
 
 ## Contributions
 
