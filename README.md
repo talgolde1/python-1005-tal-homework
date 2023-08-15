@@ -24,11 +24,11 @@ This module warmly welcomes users to the World of Games and facilitates the laun
 
 ### GuessGame.py
 
-Can you remember a sequence of numbers displayed for a brief moment? In the Memory Game, a sequence of random numbers will appear, and you must recall and input the same sequence afterward. Challenge your memory and observation skills!
+In this game, you need to guess a randomly chosen number between 1 and the selected difficulty level. Put your intuition to the test and see if you can guess correctly!
 
 ### MemoryGame.py
 
-This module embodies the Memory Game, where users strive to recollect a sequence of numbers.
+Can you remember a sequence of numbers displayed for a brief moment? In the Memory Game, a sequence of random numbers will appear, and you must recall and input the same sequence afterward. Challenge your memory and observation skills!
 
 ### CurrencyRouletteGame.py
 
