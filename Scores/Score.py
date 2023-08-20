@@ -11,8 +11,8 @@ def add_score(difficulty):
             current_score = int(file.read())
             new_score = current_score + winnig_points(difficulty)
             file.seek(0)
-            file.write(str(new_score))
+            file.write(int(new_score))
     except IOError:
         with open(os.path.join("Scores", "Scores.txt"), "w") as file:
             new_score = winnig_points(difficulty)
-            file.write(str(new_score))
+            file.write(int(new_score))
